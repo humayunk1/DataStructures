@@ -11,11 +11,11 @@ using namespace std;
 //a node structure 
 template<class T>
 struct Node {
-   T val;
-   Node *next;
+	T val;
+	Node *next;
 
-   Node() {}
-   Node(const T& t, Node *p) : val(t), next(p) {}
+	Node() {}
+	Node(const T& t, Node *p) : val(t), next(p) {}
 };
 
 //Iterator class
