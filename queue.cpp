@@ -79,6 +79,7 @@ public:
 					Node<T>* tempHead = head;
 					head = head->next;
 					Size--;
+					tempHead->next = NULL;
 					delete tempHead;
 					return retVal;
 				}
@@ -153,7 +154,7 @@ public:
 };        
 
 
-
+/*
 //Test the data structure
 int main() {
 	Queue<int> aQueue;
@@ -183,4 +184,4 @@ int main() {
         	cout<<*it<<endl;
 
 	return 0;
-}
+}*/
