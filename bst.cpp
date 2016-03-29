@@ -82,16 +82,19 @@ private:
         }
 
 	//delete the minimum element from the tree rooted at x
-        treeNode<Key,Value> *deleteMin(treeNode<Key,Value> *x) {
+        treeNode<Key,Value> *deleteMin(treeNode<Key,Value> *x, bool fromDel) {
 		if( x == NULL)
 			return NULL;
 	
 		if(x->left == NULL) {
 			treeNode<Key,Value> *retNode = x->right;
-			delete x; 
+			if( !fromDel ) { 
+				x->right = NULL;
+				delete x; 
+			}
 			return retNode;
 		}
-		x->left = deleteMin(x->left);
+		x->left = deleteMin(x->left, fromDel);
 		x->count = 1 + size(x->left) + size(x->right);
 
 		return x;
@@ -122,12 +125,14 @@ private:
 			//if left subtree is empty return right subtree
 			if(x->left == NULL) {
 				treeNode<Key,Value> *retNode = x->right;
+				x->right = NULL;
 				delete x;
 				return retNode; 
 			}
 			//if right subtree is empty return left subtree
 			if(x->right == NULL) {
 				treeNode<Key,Value> *retNode = x->left;
+				x->left = NULL;
 				delete x;
 				return retNode; 
 			}
@@ -138,8 +143,10 @@ private:
 
 			//x is replaced by the minimum element of the right subtree
 			x = min(t->right);
-			x->right = deleteMin(t->right);
+			x->right = deleteMin(t->right, true);
 			x->left = t->left;
+			t->left = NULL;
+			t->right = NULL;
 			delete t;
 		}
 		x->count = size(x->left) + size(x->right) + 1;
@@ -205,7 +212,7 @@ public:
 
 	//delets the minimum element in the tree
         void deleteMin() {
-		root = deleteMin(root);
+		root = deleteMin(root, true);
         }
 
 	//deletes a given key from the tree
@@ -242,11 +249,13 @@ int main(int argc, char *argv[]) {
 	bst.insert(40, "hello40");
 
 	cout<<"Size of the tree: "<<bst.size()<<endl;
+	cout<<"Inorder traversal."<<endl;
 	bst.inorder();
-	bst.Delete(-4);
-	cout<<"after deleting key: -4\n";
-	bst.inorder();
+	bst.Delete(1);
+	cout<<"after deleting key: 1\n";
 	cout<<"Size of the tree: "<<bst.size()<<endl;
+	cout<<"Inorder traversal."<<endl;
+	bst.inorder();
 
 	return 0;
 }
